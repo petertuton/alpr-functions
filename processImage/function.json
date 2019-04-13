@@ -1,15 +1,17 @@
 {
   "bindings": [
     {
-      "type": "eventGridTrigger",
-      "name": "eventGridEvent",
+      "type": "serviceBusTrigger",
+      "name": "inputNewImageQueue",
+      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "queueName": "processimage",
       "direction": "in"
     },
     {
       "type": "serviceBus",
       "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
-      "name": "outputSaveImageDetailsQueue",
-      "topicName": "saveimagedetails",
+      "name": "outputExportImageDetailsQueue",
+      "topicName": "exportimagedetails",
       "direction": "out"
     },
     {

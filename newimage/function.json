@@ -8,8 +8,8 @@
     {
       "type": "serviceBus",
       "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
-      "name": "outputNewImageQueue",
-      "topicName": "newimage",
+      "name": "outputProcessImageQueue",
+      "topicName": "processimage",
       "direction": "out"
     }
   ]
