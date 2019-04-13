@@ -8,6 +8,6 @@ module.exports = async function (context, eventGridEvent) {
 
   // Push the details to the newimage queue
   context.log(message);   
-  context.bindings.outputNewImageQueue = message;
+  context.bindings.outputProcessImageQueue = message;
   context.done();
 };
