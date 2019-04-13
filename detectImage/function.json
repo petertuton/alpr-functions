@@ -1,0 +1,23 @@
+{
+  "bindings": [
+    {
+      "type": "eventGridTrigger",
+      "name": "eventGridEvent",
+      "direction": "in"
+    },
+    {
+      "type": "serviceBus",
+      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "name": "outputDetectedImageQueue",
+      "topicName": "detectedimage",
+      "direction": "out"
+    },
+    {
+      "type": "serviceBus",
+      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "name": "outputManuelImageQueue",
+      "topicName": "manualimage",
+      "direction": "out"
+    }
+  ]
+}
