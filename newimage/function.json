@@ -7,7 +7,7 @@
     },
     {
       "type": "serviceBus",
-      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
       "name": "outputProcessImageQueue",
       "topicName": "processimage",
       "direction": "out"

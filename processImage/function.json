@@ -3,20 +3,20 @@
     {
       "type": "serviceBusTrigger",
       "name": "inputNewImageQueue",
-      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
       "queueName": "processimage",
       "direction": "in"
     },
     {
       "type": "serviceBus",
-      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
       "name": "outputExportImageDetailsQueue",
       "topicName": "exportimagedetails",
       "direction": "out"
     },
     {
       "type": "serviceBus",
-      "connection": "alrp-servicebus_RootManageSharedAccessKey_SERVICEBUS",
+      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
       "name": "outputManuallyProcessImageQueue",
       "topicName": "manuallyprocessimage",
       "direction": "out"
