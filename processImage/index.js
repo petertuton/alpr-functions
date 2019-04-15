@@ -16,50 +16,50 @@ module.exports = async function (context, eventGridEvent) {
   
   context.log("OpenALPR url:",openalpr_url);
 
-  axios.post(openalpr_url)
-    .then( (response) => {
-      context.log(response);
+  try {
+    const response = await axios.post(openalpr_url);
+    context.log(response);
 
-      // Check for an error
-      // TODO: Do something about the error
-      let error = response.error;
+    // Check for an error
+    // TODO: Do something about the error
+    let error = response.error;
 
-      // Proess the result
-      let result = (response.results.length > 0) && response.results[0];
-      let plate = result.plate;
-      let confidence = result.confidence;
-      let region = result.region;
+    // Proess the result
+    let result = (response.results.length > 0) && response.results[0];
+    let plate = result.plate;
+    let confidence = result.confidence;
+    let region = result.region;
 
-      // Check for confidence based on a provided threshold
-      // let isConfident = (confidence >= process.env.CONFIDENCE_THRESHOLD);
-      let isConfident = true;
-      context.log("confidence_threshold:",confidence_threshold);
-      context.log("confidence:",confidence);
-      context.log("isDetected:",isDetected);
-    
-      // Create the message
-      const message = {
-        file: eventGridEvent.data.url,
-        time: eventGridEvent.eventTime,
-        plate,
-        region,
-        confidence
-      };
-    
-      // Send processing results to the appropriate queue
-      if (isConfident) {
-        context.log("Pushing message to exportimage queue:",message);
-        context.bindings.outputExportImageDetailsQueue = message;
-      } else {
-        context.log("Pushing message to manuallyprocess queue",message);
-        context.bindings.outputManuallyProcessImageQueue = message;
-      }
-      context.done();
-    })
-    .catch( (error) => {
-      context.log(error);
+    // Check for confidence based on a provided threshold
+    // let isConfident = (confidence >= process.env.CONFIDENCE_THRESHOLD);
+    let isConfident = true;
+    context.log("confidence_threshold:",confidence_threshold);
+    context.log("confidence:",confidence);
+    context.log("isDetected:",isDetected);
+  
+    // Create the message
+    const message = {
+      file: eventGridEvent.data.url,
+      time: eventGridEvent.eventTime,
+      plate,
+      region,
+      confidence
+    };
+  
+    // Send processing results to the appropriate queue
+    if (isConfident) {
+      context.log("Pushing message to exportimage queue:",message);
+      context.bindings.outputExportImageDetailsQueue = message;
+    } else {
       context.log("Pushing message to manuallyprocess queue",message);
       context.bindings.outputManuallyProcessImageQueue = message;
-      context.done();
-    });
+    }
+  } catch(error) {
+    context.log(error);
+    context.log("Pushing message to manuallyprocess queue",message);
+    context.bindings.outputManuallyProcessImageQueue = message;
+    
+  } finally {
+    context.done();
+  }
 };
