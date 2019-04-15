@@ -40,9 +40,9 @@ module.exports = async function (context, eventGridEvent) {
     // Check for confidence based on a provided threshold
     // let isConfident = (confidence >= process.env.CONFIDENCE_THRESHOLD);
     let isConfident = true;
-    context.log("confidence_threshold:",confidence_threshold);
+    context.log("confidence_threshold:",process.env.CONFIDENCE_THRESHOLD);
     context.log("confidence:",confidence);
-    context.log("isDetected:",isDetected);
+    context.log("isConfident:",isConfident);
   
     // Create the message
     const message = {
