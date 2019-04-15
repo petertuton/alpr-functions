@@ -19,33 +19,37 @@ module.exports = async function (context, eventGridEvent) {
   axios.post(openalpr_url)
     .then( (response) => {
       context.log(response);
+
+      let confidence = 90;  // TODO: Set to the result from the API call
+
+      // Check for confidence based on a provided threshold
+      const confidence_threshold = process.env.CONFIDENCE_THRESHOLD;
+      // let isConfident = (confidence >= confidence_threshold);
+      let isConfident = true;
+      context.log("confidence_threshold:",confidence_threshold);
+      context.log("confidence:",confidence);
+      context.log("isDetected:",isDetected);
+    
+      // Create the message
+      const message = {
+        file: eventGridEvent.data.url,
+        time: eventGridEvent.eventTime
+      };
+    
+      // Send processing results to the appropriate queue
+      if (isConfident) {
+        context.log("Pushing message to exportimage queue:",message);
+        context.bindings.outputExportImageDetailsQueue = message;
+      } else {
+        context.log("Pushing message to manuallyprocess queue",message);
+        context.bindings.outputManuallyProcessImageQueue = message;
+      }
+      context.done();
     })
     .catch( (error) => {
       context.log(error);
+      context.log("Pushing message to manuallyprocess queue",message);
+      context.bindings.outputManuallyProcessImageQueue = message;
+      context.done();
     });
-  
-  let confidence = 90;  // TODO: Set to the result from the API call
-
-  // Check for confidence based on a provided threshold
-  const confidence_threshold = process.env.CONFIDENCE_THRESHOLD;
-  let isDetected = (confidence >= confidence_threshold);
-  context.log("confidence_threshold:",confidence_threshold);
-  context.log("confidence:",confidence);
-  context.log("isDetected:",isDetected);
-
-  // Create the message
-  const message = {
-    file: eventGridEvent.data.url,
-    time: eventGridEvent.eventTime
-  };
-
-  // Send processing results to the appropriate queue
-  if (isDetected) {
-    context.log("Pushing message to exportimage queue:",message);
-    context.bindings.outputExportImageDetailsQueue = message;
-  } else {
-    context.log("Pushing message to manuallyprocess queue",message);
-    context.bindings.outputManuallyProcessImageQueue = message;
-  }
-  context.done();
 };
