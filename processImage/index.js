@@ -1,5 +1,3 @@
-// const azure_servicebus = require('azure-sb');
-
 module.exports = async function (context, eventGridEvent) {
   context.log(eventGridEvent);
 
@@ -20,22 +18,14 @@ module.exports = async function (context, eventGridEvent) {
   const message = {
     file
   };
-  // const sb = azure_servicebus.createServiceBusService(process.env.ALPR_SERVICEBUS_CONNECTION_STRING);
 
   // Send confident processing results to the appropriate queue
   if (isDetected) {
-      context.log("Pushing file to exportimage queue");
-      // sb.sendQueueMessage("exportimagedetails", message, function (err) {
-      //   if (err) {
-      //     context.log('Failed Tx: ', err);
-      //   } else {
-      //     context.log('Sent:' + message);
-      //   }
-      // });
-      context.bindings.outputExportImageDetailsQueue = message;
+    context.log("Pushing file to exportimage queue");
+    context.bindings.outputExportImageDetailsQueue = message;
   } else {
     context.log("Pushing file to manuallyprocess queue");
-      context.bindings.outputManuallyProcessImageQueue = message;
+    context.bindings.outputManuallyProcessImageQueue = message;
   }
   context.done();
 };
