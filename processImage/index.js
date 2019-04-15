@@ -12,12 +12,8 @@ module.exports = async function (context, eventGridEvent) {
 
   // Send confident processing results to the appropriate queue
   if (isDetected) {
-      let message = eventGridEvent;
-      context.log(message);   
       context.bindings.outputSaveImageDetailsQueue = file;
   } else {
-      let message = eventGridEvent;
-      context.log(message);   
       context.bindings.outputManuallyProcessImageQueue = file;
   }
   context.done();
