@@ -25,7 +25,7 @@ module.exports = async function (context, eventGridEvent) {
   // Send confident processing results to the appropriate queue
   if (isDetected) {
       context.log("Pushing file to exportimage queue");
-      sb.sendQueueMessage("exportimage", message, function (err) {
+      sb.sendQueueMessage("exportimagedetails", message, function (err) {
         if (err) {
           context.log('Failed Tx: ', err);
         } else {
