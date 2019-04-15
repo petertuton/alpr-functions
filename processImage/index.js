@@ -14,18 +14,25 @@ module.exports = async function (context, eventGridEvent) {
   const openalpr_imageurl = "image_url=" + eventGridEvent.data.url;
   const openalpr_url = openalpr_baseurl + openalpr_operation + "?" + openalpr_country + "&" + openalpr_key + "&" + openalpr_imageurl;
   
-  context.log("OpenALPR url:",openalpr_url);
-
+  context.log("Attempting OpenALPR call:",openalpr_url);
   try {
     const response = await axios.post(openalpr_url);
     context.log(response);
 
-    // Check for an error
+    // Check for response code
+    // TODO
+    // if (response.status != 200) {}
+
+    // Process the data
+    const data = response.data;
+    context.log(data);
+
+    // Check for an error sent from OpenALPR
     // TODO: Do something about the error
-    let error = response.error;
+    let error = data.error;
 
     // Proess the result
-    let result = (response.results.length > 0) && response.results[0];
+    let result = (data.results.length > 0) && data.results[0];
     let plate = result.plate;
     let confidence = result.confidence;
     let region = result.region;
@@ -54,11 +61,12 @@ module.exports = async function (context, eventGridEvent) {
       context.log("Pushing message to manuallyprocess queue",message);
       context.bindings.outputManuallyProcessImageQueue = message;
     }
+
   } catch(error) {
     context.log(error);
     context.log("Pushing message to manuallyprocess queue",message);
     context.bindings.outputManuallyProcessImageQueue = message;
-    
+
   } finally {
     context.done();
   }
