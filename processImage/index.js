@@ -4,10 +4,10 @@ module.exports = async function (context, eventGridEvent) {
   context.log(eventGridEvent);
 
   // Confirm this event is for a 'Microsoft.Storage.BlobCreated' event (in case the event is created with the Microsoft.Storage.BlobDeleted event)
-  if (eventGridEvent.eventType != "Microsoft.Storage.BlobCreated") return;
+  // if (eventGridEvent.eventType != "Microsoft.Storage.BlobCreated") return;
 
   // Call the OpenALPR API - just use the image_url function for now (with unauth access to the images container)
-  const openalpr_baseurl = process.env.OPENALPR_URL || "https://api.openalpr.com/v2/";
+  const openalpr_baseurl = process.env.OPENALPR_URL;
   const openalpr_operation = "recognize_url";
   const openalpr_country = "country=us";
   const openalpr_key = "secret_key=" + process.env.OPENALPR_KEY;

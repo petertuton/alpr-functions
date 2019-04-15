@@ -1,6 +1,10 @@
 # Local settings
 local.settings.json
 
+# Extensions related
+obj/
+bin/
+
 # Logs
 logs
 *.log
