@@ -14,17 +14,17 @@ module.exports = async function (context, eventGridEvent) {
   context.log("confidence:",confidence);
   context.log("isDetected:",isDetected);
 
-  // Use direct code instead of output binding to send a message to the sb
+  // Create the message
   const message = {
     file
   };
 
-  // Send confident processing results to the appropriate queue
+  // Send processing results to the appropriate queue
   if (isDetected) {
-    context.log("Pushing file to exportimage queue");
+    context.log("Pushing message to exportimage queue:",message);
     context.bindings.outputExportImageDetailsQueue = message;
   } else {
-    context.log("Pushing file to manuallyprocess queue");
+    context.log("Pushing message to manuallyprocess queue",message);
     context.bindings.outputManuallyProcessImageQueue = message;
   }
   context.done();
