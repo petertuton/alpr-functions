@@ -20,11 +20,18 @@ module.exports = async function (context, eventGridEvent) {
     .then( (response) => {
       context.log(response);
 
-      let confidence = 90;  // TODO: Set to the result from the API call
+      // Check for an error
+      // TODO: Do something about the error
+      let error = response.error;
+
+      // Proess the result
+      let result = (response.results.length > 0) && response.results[0];
+      let plate = result.plate;
+      let confidence = result.confidence;
+      let region = result.region;
 
       // Check for confidence based on a provided threshold
-      const confidence_threshold = process.env.CONFIDENCE_THRESHOLD;
-      // let isConfident = (confidence >= confidence_threshold);
+      // let isConfident = (confidence >= process.env.CONFIDENCE_THRESHOLD);
       let isConfident = true;
       context.log("confidence_threshold:",confidence_threshold);
       context.log("confidence:",confidence);
@@ -33,7 +40,10 @@ module.exports = async function (context, eventGridEvent) {
       // Create the message
       const message = {
         file: eventGridEvent.data.url,
-        time: eventGridEvent.eventTime
+        time: eventGridEvent.eventTime,
+        plate,
+        region,
+        confidence
       };
     
       // Send processing results to the appropriate queue
