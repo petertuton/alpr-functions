@@ -1,11 +1,9 @@
 {
-  "disabled": true,
+  "disabled": false,
   "bindings": [
     {
-      "type": "serviceBusTrigger",
-      "name": "inputNewImageQueue",
-      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
-      "queueName": "processimage",
+      "type": "eventGridTrigger",
+      "name": "eventGridEvent",
       "direction": "in"
     },
     {
