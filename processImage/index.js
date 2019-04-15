@@ -34,10 +34,9 @@ module.exports = async function (context, eventGridEvent) {
   context.log("isDetected:",isDetected);
 
   // Create the message
-  const eventTime = eventGridEvent.eventTime;
   const message = {
     file: eventGridEvent.data.url,
-    time: eventTime
+    time: eventGridEvent.eventTime
   };
 
   // Send processing results to the appropriate queue

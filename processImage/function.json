@@ -8,14 +8,14 @@
     },
     {
       "type": "serviceBus",
-      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
+      "connection": "AZURE_SERVICEBUS_CONNECTION_STRING",
       "name": "outputExportImageDetailsQueue",
       "topicName": "exportimagedetails",
       "direction": "out"
     },
     {
       "type": "serviceBus",
-      "connection": "ALPR_SERVICEBUS_CONNECTION_STRING",
+      "connection": "AZURE_SERVICEBUS_CONNECTION_STRING",
       "name": "outputManuallyProcessImageQueue",
       "topicName": "manuallyprocessimage",
       "direction": "out"
