@@ -1,4 +1,4 @@
-// const axios = require('axios');
+const axios = require('axios');
 
 module.exports = async function (context, eventGridEvent) {
   context.log(eventGridEvent);
@@ -16,13 +16,13 @@ module.exports = async function (context, eventGridEvent) {
   
   context.log("OpenALPR url:",openalpr_url);
 
-  // axios.post(openalpr_url)
-  //   .then( (response) => {
-  //     context.log(response);
-  //   })
-  //   .catch( (error) => {
-  //     context.log(error);
-  //   });
+  axios.post(openalpr_url)
+    .then( (response) => {
+      context.log(response);
+    })
+    .catch( (error) => {
+      context.log(error);
+    });
   
   let confidence = 90;  // TODO: Set to the result from the API call
 
