@@ -3,8 +3,8 @@ const axios = require('axios');
 module.exports = async function (context, eventGridEvent) {
   context.log(eventGridEvent);
 
-  // Confirm this event is for a 'PutBlockList' event
-  if (eventGridEvent.data.api != "PutBlockList") return;
+  // Confirm this event is for a 'Microsoft.Storage.BlobCreated' event (in case the event is created with the Microsoft.Storage.BlobDeleted event)
+  if (eventGridEvent.eventType != "Microsoft.Storage.BlobCreated") return;
 
   // Call the OpenALPR API - just use the image_url function for now (with unauth access to the images container)
   const openalpr_baseurl = process.env.OPENALPR_URL || "https://api.openalpr.com/v2/";
@@ -20,6 +20,9 @@ module.exports = async function (context, eventGridEvent) {
     .then( (response) => {
       context.log(response);
     })
+    .catch( (error) => {
+      context.log(error);
+    });
   
   let confidence = 90;  // TODO: Set to the result from the API call
 
@@ -31,8 +34,10 @@ module.exports = async function (context, eventGridEvent) {
   context.log("isDetected:",isDetected);
 
   // Create the message
+  const eventTime = eventGridEvent.eventTime;
   const message = {
-    file: eventGridEvent.data.url
+    file: eventGridEvent.data.url,
+    time: eventTime
   };
 
   // Send processing results to the appropriate queue
